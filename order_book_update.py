@@ -131,6 +131,8 @@ def process_event(ticker: str, new_asks:dict, new_bids:dict):
         new_asks (dict): _description_
         new_bids (dict): _description_
     """    
+    global info
+
     # datos del snapshot
     asks_df = info[ticker]['asks']
     bids_df = info[ticker]['bids']
@@ -171,6 +173,13 @@ def process_event(ticker: str, new_asks:dict, new_bids:dict):
     info[ticker]['bids'] = bids_df
 
     # Hasta aqui tenemos la actualización constante del Order Book
+
+    # Guardamos en CSV un ejemplo de un Order Book (asks y bids) para hacer pruebas
+    # y traer los puntos
+
+    if info[ticker]['event_id'] == 1:
+        asks_df.to_csv("asks_df.csv")
+        bids_df.to_csv("bids_df.csv")
 
 
 def on_message(ws, msg, ticker):
@@ -240,7 +249,7 @@ def start_ws(ticker:str):
 def main():
     global info
     
-    ticker = "btcusdt"
+    ticker = "maticusdt"
     # 1. Iniciamos la variable que guarda la información
     init_info(ticker)
         
